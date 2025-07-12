@@ -32,10 +32,12 @@ export default function RootLayout({ children }) {
     try {
       if (localStorage.getItem("cart")) {
         setCart(JSON.parse(localStorage.getItem("cart")));
+        saveCart(JSON.parse(localStorage.getItem("cart")))
       }
     } catch (error) {
       localStorage.clear();
     }
+    
   }, []);
 
   const saveCart = (myCart) => {
@@ -49,15 +51,18 @@ export default function RootLayout({ children }) {
   };
 
   const addToCart = (itemCode, qty, price, name, size, variant) => {
-    let newCart = { ...cart };
-    if (itemCode in newCart) {
-      newCart[itemCode].qty = cart[itemCode].qty + qty;
-    } else {
-      newCart[itemCode] = { qty: 1, price, name, size, variant };
-    }
-    setCart(newCart);
-    saveCart(newCart);
-  };
+  let newCart = { ...cart };
+
+  if (itemCode in newCart) {
+    newCart[itemCode].qty += qty;
+  } else {
+    newCart[itemCode] = { qty: qty, price, name, size, variant }; // 👈 use qty passed!
+  }
+
+  setCart(newCart);
+  saveCart(newCart);
+};
+
 
   const removeFromCart = (itemCode, qty) => {
     let newCart = { ...cart };
@@ -83,7 +88,7 @@ export default function RootLayout({ children }) {
         <CartContext.Provider
           value={{ cart, setCart, addToCart, removeFromCart, clearCart, subTotal }}
         >
-          <Navbar />
+          <Navbar key={subTotal}/>
           {children}
           <Footer />
         </CartContext.Provider>
