@@ -7,6 +7,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import { IoClose } from "react-icons/io5";
 import { AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai'
 import { BsFillBagCheckFill } from 'react-icons/bs'
+import { MdAccountCircle } from "react-icons/md";
 import { CartContext } from '../layout.js'
 
 const Navbar = () => {
@@ -40,9 +41,10 @@ const Navbar = () => {
                     <Link href={'/mugs'}><li>Mugs</li></Link>
                 </ul>
             </div>
-            <div className="cart absolute right-0 top-4 mx-5">
-                <button onClick={toggleCart}>
-                    <TiShoppingCart className='text-xl md:text-4xl cursor-pointer' />
+            <div className="cart absolute right-0 top-4 mx-5 flex">
+                <Link href={'/login'}><MdAccountCircle className='text-xl md:text-4xl cursor-pointer'/></Link>
+                <button onClick={toggleCart}>  
+                    <TiShoppingCart className='mx-1 text-xl md:text-4xl cursor-pointer' />
                 </button>
             </div>
 
