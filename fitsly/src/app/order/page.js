@@ -10,44 +10,51 @@ const Order = () => {
             <div className="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
               <h2 className="text-sm title-font text-gray-500 tracking-widest">FITSLY</h2>
               <h1 className="text-gray-900 text-3xl title-font font-medium mb-4">Order Id: #44821</h1>
-
-              <div className="flex mb-4">
-          <a className="flex-grow text-pink-500 border-pink-500 py-2 text-lg px-1">Description</a>
-          <a className="flex-grow border-gray-300 py-2 text-lg px-1">Reviews</a>
-          <a className="flex-grow border-gray-300 py-2 text-lg px-1">Details</a>
-        </div>
-             
               <p className="leading-relaxed mb-4">Your order has been successfully placed!</p>
-              <div className="flex border-t border-gray-200 py-2">
-                <span className="text-gray-500">Wear-the-code Xl/Black</span>
-                <span className="ml-auto text-gray-900">1</span>
-                <span className="ml-auto text-gray-900">499</span>
+
+              <div className="mb-6">
+
+                {/* Table Headers */}
+                <div className="grid grid-cols-3 border-b border-gray-300 py-2 font-semibold text-gray-700 text-sm md:text-base">
+                  <span>Product</span>
+                  <span className="text-center">Qty</span>
+                  <span className="text-right">Price ($)</span>
+                </div>
+
+                {/* Row 1 */}
+                <div className="grid grid-cols-3 border-b border-gray-200 py-2">
+                  <span className="text-gray-600">Wear-the-code XL / Black</span>
+                  <span className="text-center text-gray-900">1</span>
+                  <span className="text-right text-gray-900">499</span>
+                </div>
+
+                {/* Row 2 */}
+                <div className="grid grid-cols-3 border-b border-gray-200 py-2">
+                  <span className="text-gray-600">Wear-the-code XL / Black</span>
+                  <span className="text-center text-gray-900">1</span>
+                  <span className="text-right text-gray-900">499</span>
+                </div>
+
+                {/* Row 3 */}
+                <div className="grid grid-cols-3 border-b border-gray-200 py-2">
+                  <span className="text-gray-600">Wear-the-code Small / Blue</span>
+                  <span className="text-center text-gray-900">1</span>
+                  <span className="text-right text-gray-900">399</span>
+                </div>
               </div>
 
-              <div className="flex border-t border-gray-200 py-2">
-                <span className="text-gray-500">Wear-the-code Xl/Black</span>
-                <span className="ml-auto text-gray-900">1</span>
-                <span className="ml-auto text-gray-900">499</span>
-              </div>
 
-              <div className="flex border-t border-gray-200 py-2">
-                <span className="text-gray-500">Wear-the-code Small/Blue</span>
-                <span className="ml-auto text-gray-900">1</span>
-                <span className="ml-auto text-gray-900">399</span>
-              </div>
-
-              <div className="flex">
+              <div className="flex flex-col">
                 <span className="title-font font-medium text-2xl text-gray-900">SubTotal: $58.00</span>
-                <button className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded">Button</button>
-                <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-                  <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
-                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
-                  </svg>
-                </button>
+                <div className='my-2'>
+                  <button className="flex mx-0 my-2 text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded">Track Order</button>
+
+                </div>
               </div>
             </div>
-            <Image alt="ecommerce" width={400} height={400} className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src='' />
+            <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src='https://m.media-amazon.com/images/I/61C+zURu0EL._AC_SX522_.jpg'></img>
           </div>
+          
         </div>
       </section>
     </div>
