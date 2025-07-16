@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { useEffect, useState, createContext } from "react";
+import { useRouter } from "next/navigation"; // ✅ correct for App Router
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export const CartContext = createContext();
 export default function RootLayout({ children }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
+  const router = useRouter()
 
   useEffect(() => {
     try {
@@ -37,31 +39,31 @@ export default function RootLayout({ children }) {
     } catch (error) {
       localStorage.clear();
     }
-    
+
   }, []);
 
   const saveCart = (myCart) => {
     localStorage.setItem("cart", JSON.stringify(myCart));
     let subt = 0;
     let keys = Object.keys(myCart)
-    for(let i = 0; i<keys.length; i++){
+    for (let i = 0; i < keys.length; i++) {
       subt += myCart[keys[i]].price * myCart[keys[i]].qty;
     }
     setSubTotal(subt)
   };
 
   const addToCart = (itemCode, qty, price, name, size, variant) => {
-  let newCart = { ...cart };
+    let newCart = { ...cart };
 
-  if (itemCode in newCart) {
-    newCart[itemCode].qty += qty;
-  } else {
-    newCart[itemCode] = { qty: qty, price, name, size, variant }; // 👈 use qty passed!
-  }
+    if (itemCode in newCart) {
+      newCart[itemCode].qty += qty;
+    } else {
+      newCart[itemCode] = { qty: qty, price, name, size, variant }; // 👈 use qty passed!
+    }
 
-  setCart(newCart);
-  saveCart(newCart);
-};
+    setCart(newCart);
+    saveCart(newCart);
+  };
 
 
   const removeFromCart = (itemCode, qty) => {
@@ -81,14 +83,24 @@ export default function RootLayout({ children }) {
     saveCart({});
   };
 
+  const buyNow = (itemCode, qty, price, name, size, variant) => {
+    
+    let newCart = {itemCode:{ qty: 1, price, name, size, variant }};
+
+    setCart(newCart);
+    saveCart(newCart);
+
+    router.push('/checkout')
+  }
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* ✅ Wrap everything in the provider */}
         <CartContext.Provider
-          value={{ cart, setCart, addToCart, removeFromCart, clearCart, subTotal }}
+          value={{ buyNow, cart, setCart, addToCart, removeFromCart, clearCart, subTotal }}
         >
-          <Navbar key={subTotal}/>
+          <Navbar key={subTotal} />
           {children}
           <Footer />
         </CartContext.Provider>

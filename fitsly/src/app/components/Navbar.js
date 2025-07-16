@@ -49,7 +49,7 @@ const Navbar = () => {
             </div>
 
 
-            <div ref={ref} className={`w-72 h-[100vh] sidebar absolute right-0 top-0 bg-pink-100 px-8 py-10 transform transition-transform ${Object.keys(cart).length!==0 ? ' translate-x-0' : ' translate-x-full'}`}>
+            <div ref={ref} className={`w-72 h-[100vh] sidebar overflow-y-scroll absolute right-0 top-0 bg-pink-100 px-8 py-10 transform transition-transform ${Object.keys(cart).length!==0 ? ' translate-x-0' : ' translate-x-full'}`}>
                 <h2 className='font-bold text-xl text-center'>Shopping Cart</h2> 
                 <span onClick={toggleCart} className='absolute top-4 right-4 cursor-pointer'><IoClose className='text-2xl' /></span>
                 <ol className='list-decimal font-semibold'>
