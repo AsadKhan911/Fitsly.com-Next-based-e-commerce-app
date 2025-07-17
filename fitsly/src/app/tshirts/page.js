@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 
@@ -14,10 +15,14 @@ const TShirts = () => {
         const data = await res.json()
 
         if (data.success) {
-          setProducts(data.tshirts)
+          // Filter only tshirts category
+          const tshirtProducts = data.products.filter(
+            (product) => product.category.toLowerCase() === 't-shirts'
+          )
+          setProducts(tshirtProducts)
         }
       } catch (error) {
-        console.error('Fetch error:', error)
+        console.error('Fetch error:' , error)
       }
     }
 
@@ -54,42 +59,34 @@ const TShirts = () => {
 
                     {/* ✅ Sizes */}
                     <div className="mt-2">
-                      {product.size.includes('S') && (
-                        <span className="border border-gray-300 px-1 mx-1">S</span>
-                      )}
-                      {product.size.includes('M') && (
-                        <span className="border border-gray-300 px-1 mx-1">M</span>
-                      )}
-                      {product.size.includes('L') && (
-                        <span className="border border-gray-300 px-1 mx-1">L</span>
-                      )}
-                      {product.size.includes('XL') && (
-                        <span className="border border-gray-300 px-1 mx-1">XL</span>
-                      )}
-                      {product.size.includes('XXL') && (
-                        <span className="border border-gray-300 px-1 mx-1">XXL</span>
+                      {['S', 'M', 'L', 'XL', 'XXL'].map((size) =>
+                        product.size.includes(size) ? (
+                          <span
+                            key={size}
+                            className="border border-gray-300 px-1 mx-1"
+                          >
+                            {size}
+                          </span>
+                        ) : null
                       )}
                     </div>
 
                     {/* ✅ Colors */}
                     <div className="flex justify-center mt-2">
-                      {product.color.includes('Red') && (
-                        <button className="border border-gray-300 ml-1 bg-red-700 rounded-full w-6 h-6"></button>
-                      )}
-                      {product.color.includes('Blue') && (
-                        <button className="border border-gray-300 ml-1 bg-blue-700 rounded-full w-6 h-6"></button>
-                      )}
-                      {product.color.includes('Black') && (
-                        <button className="border border-gray-300 ml-1 bg-black rounded-full w-6 h-6"></button>
-                      )}
-                      {product.color.includes('White') && (
-                        <button className="border border-gray-300 ml-1 bg-white rounded-full w-6 h-6"></button>
-                      )}
-                      {product.color.includes('Green') && (
-                        <button className="border border-gray-300 ml-1 bg-green-700 rounded-full w-6 h-6"></button>
-                      )}
-                      {product.color.includes('Yellow') && (
-                        <button className="border border-gray-300 ml-1 bg-yellow-400 rounded-full w-6 h-6"></button>
+                      {['Red', 'Blue', 'Black', 'White', 'Green', 'Yellow'].map(
+                        (color) =>
+                          product.color.includes(color) && (
+                            <button
+                              key={color}
+                              className={`border border-gray-300 ml-1 rounded-full w-6 h-6 ${
+                                color === 'White'
+                                  ? 'bg-white'
+                                  : color === 'Black'
+                                  ? 'bg-black'
+                                  : `bg-${color.toLowerCase()}-700`
+                              }`}
+                            ></button>
+                          )
                       )}
                     </div>
                   </div>

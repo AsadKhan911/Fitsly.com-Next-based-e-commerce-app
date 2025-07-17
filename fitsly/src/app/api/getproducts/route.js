@@ -8,25 +8,25 @@ export async function GET() {
 
     const products = await Product.find();
 
-    let tshirts = {};
+    const groupedProducts = {};
 
     for (let item of products) {
       // Filter inventory with qty > 0
       const availableVariants = item.inventory.filter(variant => variant.qty > 0);
 
-      if (availableVariants.length === 0) continue; // Skip product if no stock
+      if (availableVariants.length === 0) continue; // Skip if no stock
 
-      if (tshirts[item.title]) {
+      if (groupedProducts[item.title]) {
         for (let variant of availableVariants) {
-          if (!tshirts[item.title].color.includes(variant.color)) {
-            tshirts[item.title].color.push(variant.color);
+          if (!groupedProducts[item.title].color.includes(variant.color)) {
+            groupedProducts[item.title].color.push(variant.color);
           }
-          if (!tshirts[item.title].size.includes(variant.size)) {
-            tshirts[item.title].size.push(variant.size);
+          if (!groupedProducts[item.title].size.includes(variant.size)) {
+            groupedProducts[item.title].size.push(variant.size);
           }
         }
       } else {
-        tshirts[item.title] = {
+        groupedProducts[item.title] = {
           _id: item._id,
           title: item.title,
           slug: item.slug,
@@ -39,17 +39,17 @@ export async function GET() {
         };
 
         for (let variant of availableVariants) {
-          if (!tshirts[item.title].color.includes(variant.color)) {
-            tshirts[item.title].color.push(variant.color);
+          if (!groupedProducts[item.title].color.includes(variant.color)) {
+            groupedProducts[item.title].color.push(variant.color);
           }
-          if (!tshirts[item.title].size.includes(variant.size)) {
-            tshirts[item.title].size.push(variant.size);
+          if (!groupedProducts[item.title].size.includes(variant.size)) {
+            groupedProducts[item.title].size.push(variant.size);
           }
         }
       }
     }
 
-    if (Object.keys(tshirts).length === 0) {
+    if (Object.keys(groupedProducts).length === 0) {
       return Response.json({
         success: true,
         products: [],
@@ -57,7 +57,10 @@ export async function GET() {
       });
     }
 
-    return Response.json({ success: true, tshirts: Object.values(tshirts) });
+    return Response.json({
+      success: true,
+      products: Object.values(groupedProducts)
+    });
   } catch (err) {
     console.error('Error fetching products:', err);
     return Response.json(
