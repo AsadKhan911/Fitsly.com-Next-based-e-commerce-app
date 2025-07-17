@@ -12,7 +12,7 @@ const Login = () => {
           </a>
 
           <div className="p-6 sm:p-8 rounded-2xl bg-white border border-gray-200 shadow-sm">
-            <h1 className="text-slate-900 text-center text-3xl font-semibold">Sign in</h1>
+            <h1 className="text-slate-900 text-center text-3xl font-semibold">Login</h1>
             <form className="mt-12 space-y-6">
               <div>
                 <label className="text-slate-900 text-sm font-medium mb-2 block">User name</label>
@@ -47,7 +47,7 @@ const Login = () => {
 
               <div className="!mt-12">
                 <button type="button" className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none cursor-pointer">
-                  Sign in
+                  Login
                 </button>
               </div>
               <p className="text-slate-900 text-sm !mt-6 text-center">Don't have an account? <Link href={'/signup'} className="text-pink-600 hover:underline ml-1 whitespace-nowrap font-semibold">Register here</Link></p>

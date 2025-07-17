@@ -5,7 +5,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { useEffect, useState, createContext } from "react";
-import { useRouter } from "next/navigation"; // ✅ correct for App Router
+import { useRouter } from "next/navigation"; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
