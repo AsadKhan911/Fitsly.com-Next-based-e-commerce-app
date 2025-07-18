@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useRef } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { TiShoppingCart } from "react-icons/ti";
@@ -12,7 +12,8 @@ import { CartContext } from '../layout.js'
 
 const Navbar = () => {
 
-    const { cart, clearCart, removeFromCart, addToCart } = useContext(CartContext);
+    const { logout, user, cart, clearCart, removeFromCart, addToCart } = useContext(CartContext);
+    const [dropdown, setDropdown] = useState(false)
 
     const toggleCart = () => {
         if (ref.current.classList.contains('translate-x-[100%]')) {
@@ -24,13 +25,15 @@ const Navbar = () => {
         }
     };
 
-
+    const toggleDropDown = () => {
+        setDropdown(!dropdown)
+    }
 
     const ref = useRef()
 
     return (
         <div className='flex flex-col md:flex-row md:justify-start justify-between items-center py-2 shadow-xl sticky top-0 bg-white z-10 '>
-            <div className="logo mx-5">
+            <div className="logo md:mx-5 mr-auto">
                 <Link href={'/'}><Image width={200} height={40} src='/images/logo.png' alt='' /></Link>
             </div>
             <div className="nav">
@@ -41,21 +44,55 @@ const Navbar = () => {
                     <Link href={'/mugs'}><li>Mugs</li></Link>
                 </ul>
             </div>
-            <div className="cart absolute right-0 top-4 mx-5 flex">
-                <Link href={'/login'}><MdAccountCircle className='text-xl md:text-4xl cursor-pointer'/></Link>
-                <button onClick={toggleCart}>  
+            <div className="cart absolute items-center right-0 top-4 mx-5 flex">
+                <div onMouseOver={() => setDropdown(true)} onMouseLeave={() => setDropdown(false)} className="relative">
+                    {dropdown && (
+                        <div
+                            onMouseOver={() => setDropdown(true)}
+                            onMouseLeave={() => setDropdown(false)}
+                            className="absolute right-0 top-9 bg-pink-300 shadow-lg rounded-xl w-44 z-50 overflow-hidden transition-all duration-200"
+                        >
+                            <ul className="flex flex-col divide-y divide-pink-200">
+                                <li className="hover:bg-pink-100 text-sm text-gray-800">
+                                    <Link href="/myaccount" className="block px-4 py-2 hover:text-pink-700 transition-colors">My Account</Link>
+                                </li>
+                                <li className="hover:bg-pink-100 text-sm text-gray-800">
+                                    <Link href="/orders" className="block px-4 py-2 hover:text-pink-700 transition-colors">Orders</Link>
+                                </li>
+                                <li className="hover:bg-pink-100 text-sm text-gray-800">
+                                    <Link href="/login">
+                                        <span onClick={logout} className="block px-4 py-2 hover:text-pink-700 transition-colors cursor-pointer">
+                                            Logout
+                                        </span>
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
+                    )}
+
+                    {user.value && (
+                        <MdAccountCircle className="text-xl md:text-4xl cursor-pointer text-pink-600 hover:text-pink-700 transition" />
+                    )}
+                </div>
+
+
+                {!user.value && <Link href={'/login'}>
+                    <button className='bg-pink-600 px-2 py-1 rounded-md text-sm text-white mx-2'>Login</button>
+                </Link>}
+
+                <button onClick={toggleCart}>
                     <TiShoppingCart className='mx-1 text-xl md:text-4xl cursor-pointer' />
                 </button>
             </div>
 
 
-            <div ref={ref} className={`w-72 h-[100vh] sidebar overflow-y-scroll absolute right-0 top-0 bg-pink-100 px-8 py-10 transform transition-transform ${Object.keys(cart).length!==0 ? ' translate-x-0' : ' translate-x-full'}`}>
-                <h2 className='font-bold text-xl text-center'>Shopping Cart</h2> 
+            <div ref={ref} className={`w-72 h-[100vh] sidebar overflow-y-scroll absolute right-0 top-0 bg-pink-100 px-8 py-10 transform transition-transform ${Object.keys(cart).length !== 0 ? ' translate-x-0' : ' translate-x-full'}`}>
+                <h2 className='font-bold text-xl text-center'>Shopping Cart</h2>
                 <span onClick={toggleCart} className='absolute top-4 right-4 cursor-pointer'><IoClose className='text-2xl' /></span>
                 <ol className='list-decimal font-semibold'>
 
                     {Object.keys(cart).length == 0 &&
-                     <div className='my-4 font-semibold text-center'>No items in the cart</div>}
+                        <div className='my-4 font-semibold text-center'>No items in the cart</div>}
 
                     {Object.keys(cart).map((k) => {
                         return (
@@ -65,11 +102,11 @@ const Navbar = () => {
                                         {cart[k].name} ({cart[k].size}/{cart[k].variant})
                                     </div>
                                     <div className="flex font-semibold items-center justify-center w-1/3 text-lg">
-                                        <AiFillMinusCircle 
-                                        onClick={()=>removeFromCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant)} 
-                                        className="cursor-pointer text-pink-500" />
+                                        <AiFillMinusCircle
+                                            onClick={() => removeFromCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant)}
+                                            className="cursor-pointer text-pink-500" />
                                         <span className="mx-2 text-sm">{cart[k].qty}</span>
-                                        <AiFillPlusCircle onClick={()=>addToCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant)}  className="cursor-pointer text-pink-500" />
+                                        <AiFillPlusCircle onClick={() => addToCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant)} className="cursor-pointer text-pink-500" />
                                     </div>
                                 </div>
                             </li>

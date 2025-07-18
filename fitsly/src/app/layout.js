@@ -28,6 +28,9 @@ export const CartContext = createContext();
 export default function RootLayout({ children }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
+  const [user , setUser] = useState({ value: null })
+  const [key, setKey] = useState(0)
+
   const router = useRouter()
 
   useEffect(() => {
@@ -40,7 +43,13 @@ export default function RootLayout({ children }) {
       localStorage.clear();
     }
 
-  }, []);
+    const token = localStorage.getItem('token')
+    if(token){
+      setUser({value: token})
+      setKey(Math.random())
+    }
+
+  }, [router.query]);
 
   const saveCart = (myCart) => {
     localStorage.setItem("cart", JSON.stringify(myCart));
@@ -93,12 +102,18 @@ export default function RootLayout({ children }) {
     router.push('/checkout')
   }
 
+  const logout = () => {
+    localStorage.removeItem('token')
+    setUser({value : null})
+    setKey(Math.random())
+  }
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* ✅ Wrap everything in the provider */}
         <CartContext.Provider
-          value={{ buyNow, cart, setCart, addToCart, removeFromCart, clearCart, subTotal }}
+          value={{ logout, user , key , buyNow, cart, setCart, addToCart, removeFromCart, clearCart, subTotal }}
         >
           <Navbar key={subTotal} />
           {children}
