@@ -30,12 +30,14 @@ const Login = () => {
       });
 
       const data = await res.json();
+      console.log(data);
 
       if (data.success) {
+        localStorage.setItem('token' , data.token)
         toast.success('Login successful!');
         setTimeout(() => {
           router.push('/'); // change to wherever you want
-        }, 1000);
+        }, 1500);
       } else {
         toast.error(data.error || 'Invalid credentials');
       }

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import User from '@/lib/models/User.js';
 import bcrypt from 'bcryptjs';
 import connectDB from '@/lib/DBConnection/conn.js';
+import jwt from 'jsonwebtoken'
 
 export async function POST(req) {
   try {
@@ -36,14 +37,10 @@ export async function POST(req) {
     }
 
     // Success
+    var token = jwt.sign({ fullName: user.fullName, email: user.email, }, 'jwyhshssa');
     return NextResponse.json({
       success: true,
-      message: 'Login successful',
-      user: {
-        id: user._id,
-        fullName: user.fullName,
-        email: user.email,
-      },
+     token
     });
 
   } catch (error) {
