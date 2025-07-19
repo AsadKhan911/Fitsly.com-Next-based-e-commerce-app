@@ -19,7 +19,7 @@ const page = ({ params }) => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/getProductBySlug/${slug}`);
+        const res = await axios.get(`/api/getProductBySlug/${slug}`);
         if (res.data.success) {
           setProduct(res.data.product);
 
@@ -39,7 +39,7 @@ const page = ({ params }) => {
 
   const checkServiceAvailability = async () => {
     try {
-      let response = await axios.get('http://localhost:3000/api/pincode');
+      let response = await axios.get('/api/pincode');
       let pinJson = response.data;
       if (pinJson.includes(parseInt(pin))) {
         toast.success("Pincode available!");

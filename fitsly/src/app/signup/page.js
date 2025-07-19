@@ -1,19 +1,27 @@
 'use client'
 
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
 
 const Signup = () => {
+
+  const router = useRouter()
+  
+  useEffect(()=> {
+      if(localStorage.getItem('token'))
+      {
+        router.push('/')
+      }
+    } , [])
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: '',
   })
-
-  const router = useRouter()
 
   const handleChange = (e) => {
     setFormData(prev => ({

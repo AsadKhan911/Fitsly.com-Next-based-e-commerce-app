@@ -5,7 +5,9 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { useEffect, useState, createContext } from "react";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
+import { usePathname } from 'next/navigation'
+import LoadingBar from "react-top-loading-bar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,12 +30,22 @@ export const CartContext = createContext();
 export default function RootLayout({ children }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
-  const [user , setUser] = useState({ value: null })
+  const [user, setUser] = useState({ value: null })
   const [key, setKey] = useState(0)
+  const [progress, setProgress] = useState(0);
 
+  const pathname = usePathname()
   const router = useRouter()
 
   useEffect(() => {
+    // Mimic "routeChangeStart"
+    setProgress(40)
+
+    // Mimic "routeChangeComplete"
+    const timeout = setTimeout(() => {
+      setProgress(100)
+    }, 350) 
+
     try {
       if (localStorage.getItem("cart")) {
         setCart(JSON.parse(localStorage.getItem("cart")));
@@ -44,12 +56,12 @@ export default function RootLayout({ children }) {
     }
 
     const token = localStorage.getItem('token')
-    if(token){
-      setUser({value: token})
+    if (token) {
+      setUser({ value: token })
       setKey(Math.random())
     }
-
-  }, [router.query]);
+    return () => clearTimeout(timeout)
+  }, [router.query , pathname ]);
 
   const saveCart = (myCart) => {
     localStorage.setItem("cart", JSON.stringify(myCart));
@@ -93,8 +105,8 @@ export default function RootLayout({ children }) {
   };
 
   const buyNow = (itemCode, qty, price, name, size, variant) => {
-    
-    let newCart = {itemCode:{ qty: 1, price, name, size, variant }};
+
+    let newCart = { itemCode: { qty: 1, price, name, size, variant } };
 
     setCart(newCart);
     saveCart(newCart);
@@ -104,18 +116,23 @@ export default function RootLayout({ children }) {
 
   const logout = () => {
     localStorage.removeItem('token')
-    setUser({value : null})
+    setUser({ value: null })
     setKey(Math.random())
   }
 
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <LoadingBar
+          color="#ff2d55"
+          progress={progress}
+          onLoaderFinished={() => setProgress(0)}
+        />
         {/* ✅ Wrap everything in the provider */}
         <CartContext.Provider
-          value={{ logout, user , key , buyNow, cart, setCart, addToCart, removeFromCart, clearCart, subTotal }}
+          value={{ logout, user, key, buyNow, cart, setCart, addToCart, removeFromCart, clearCart, subTotal }}
         >
-          <Navbar key={subTotal} />
+          {key && <Navbar key={subTotal} />}
           {children}
           <Footer />
         </CartContext.Provider>

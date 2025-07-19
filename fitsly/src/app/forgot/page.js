@@ -1,6 +1,17 @@
-import React from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect } from 'react'
 
-const page = () => {
+const Forgot = () => {
+
+  const router = useRouter()
+
+  useEffect(()=> {
+        if(localStorage.getItem('token'))
+        {
+          router.push('/')
+        }
+      } , [])
+
   return (
      <div>
           <div className="bg-gray-50">
@@ -37,4 +48,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Forgot

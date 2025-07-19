@@ -54,7 +54,7 @@ const Order = () => {
             </div>
             <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src='https://m.media-amazon.com/images/I/61C+zURu0EL._AC_SX522_.jpg'></img>
           </div>
-          
+
         </div>
       </section>
     </div>

@@ -9,7 +9,7 @@ const Hoodies = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/getproducts', {
+        const res = await fetch('/api/getproducts', {
           cache: 'no-store',
         })
         const data = await res.json()
